@@ -32,8 +32,9 @@
 			  		data-toggle="dropdown" role="button" aria-haspopup="true"
 			  		aria-expanded="false">접속하기<span class="caret"></span></a>
 			  	<ul class="dropdown-menu">
-			  		<li class="active"><a href="login.jsp">로그인</a></li>
-			  		<li><a href="join.jsp">회원가입</a></li>
+			  		<li><a href="login.jsp">로그인</a></li>
+			  		<!-- 로그인 리스트에 어디에 파란색 블록, 선택창이 가게 할 건지=active -->
+			  		<li class="active"><a href="join.jsp">회원가입</a></li>
 		  	</ul>	
 		  </li>
 		 </ul>

@@ -16,14 +16,28 @@
 </head>
 <body>
 	<%
+		String userID = null;
+		if(session.getAttribute("userID") != null){
+			userID = (String) session.getAttribute("userID");
+		}
+		if(userID != null){
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('이미 로그인이 되어 있습니다.')");//창 띄우기
+			script.println("location.href = 'main.jsp'"); //main.jsp로 돌려보냄
+			script.println("</script>");
+		}
 		UserDAO userDAO = new UserDAO();
 		//userDAO에서 만든 login메서드
 		int result = userDAO.login(user.getUserID(),user.getUserPassword());
+		//로그인 성공 했을 때------------------------------------------
 		if(result == 1){ // 비밀번호 일치
+			session.setAttribute("userID", user.getUserID()); //로그인 한 회원은 세션을 부여받음
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("location.href = 'main.jsp'"); //메인 페이지로 이동
 			script.println("</script>");
+		//----------------------------------------------------
 		} else if(result == 0){ //비밀번호가 다를 경우
 			PrintWriter script = response.getWriter();
 			script.println("<script>");

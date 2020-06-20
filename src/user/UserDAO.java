@@ -39,5 +39,21 @@ public class UserDAO {
 		}
 		return -2; // 데이터베이스 오류
 	}
+	public int join(User user) {
+		String SQL = "INSERT INTO USER1 VALUES (?, ?, ?, ?, ?)";
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, user.getUserID());
+			pstmt.setString(2, user.getUserPassword());
+			pstmt.setString(3, user.getUserName());
+			pstmt.setString(4, user.getUserGender());
+			pstmt.setString(5, user.getUserEmail());
+			return pstmt.executeUpdate();
+			//try가 실행된 경우에는 0이상의 값이 반환된 경우로 성공적인 실행이라고 볼 수 있음.
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return -1; //데이터베이스 오류
+	}
 	
 }

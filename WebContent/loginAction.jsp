@@ -12,7 +12,7 @@
 <meta charset="UTF-8 ">
 <meta name="viewport" content="width=device-width", initial-scale="1">
 <link rel="stylesheet" href="css/bootstrap.css">
-<title>JSP 게시판 웹사이트asfasfas</title>
+<title>JSP 게시판 웹사이트</title>
 </head>
 <body>
 	<%

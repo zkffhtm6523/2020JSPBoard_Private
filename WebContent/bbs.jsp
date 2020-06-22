@@ -1,12 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %>
+<%@ page import="bbs.BbsDAO" %>
+<%@ page import="bbs.Bbs" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8 ">
 <meta name="viewport" content="width=device-width", initial-scale="1">
 <link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <title>JSP 게시판 웹사이트</title>
 </head>
 <body>
@@ -14,6 +18,10 @@
 		String userID = null;
 		if(session.getAttribute("userID") != null){
 			userID = (String)session.getAttribute("userID");
+		}
+		int pageNumber = 1;//1은 기본 페이지
+		if(request.getParameter("pageNumber") != null){
+			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 		}
 	%>
 	<nav class="navbar navbar-default">
@@ -78,12 +86,20 @@
 					</tr>
 				</thead>
 				<tbody>
+					<%
+						BbsDAO bbsDAO = new BbsDAO();
+						ArrayList<Bbs> list = bbsDAO.getList(pageNumber);
+						for(int i = 0; i < list.size() ; i++){
+					%>
 					<tr>
-					 	<td>1</td>
-					 	<td>안녕하세요.</td>
-					 	<td>홍길동</td>
-					 	<td>2017-05-04</td>
+					 	<td><%=list.get(i).getBbsID() %></td>
+					 	<td><a href="view.jsp?bbsID=<%=list.get(i).getBbsID()%>"><%=list.get(i).getBbsTitle() %></a></td>
+					 	<td><%=list.get(i).getUserID() %></td>
+					 	<td><%=list.get(i).getBbsDate().substring(0,11)+list.get(i).getBbsDate().substring(11,13)+"시"+list.get(i).getBbsDate().substring(14, 16)+"분" %></td>
 					</tr>
+					<%
+						}
+					%>
 				</tbody>
 			</table>
 			<a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a>

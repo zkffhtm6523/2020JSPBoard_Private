@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class BbsDAO {
 	private Connection conn;
@@ -22,12 +23,12 @@ public class BbsDAO {
 	}
 	//게시판에 글 가져올 때 현재 시간을 가져오는 것
 	public String getDate() {
-		String SQL = "SELECT NOW()";
+		String SQL = "select sysdate from dual";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				return rs.getString(1);
+				return rs.getString("regdate");
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -65,5 +66,45 @@ public class BbsDAO {
 			e.printStackTrace();
 		}
 		return -1; //데이터베이스 오류
+	}
+	//특정한 페이지에 따른 10개의 게시물을 가져오도록
+	public ArrayList<Bbs> getList(int pageNumber){
+		String SQL = "SELECT * FROM BBS WHERE bbsID < ? and bbsAvailable = 1 ORDER BY bbsId DESC LIMIT 10";
+		ArrayList<Bbs> list = new ArrayList<Bbs>();
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, getNext() - (pageNumber -1)*10);
+			//getNest()는 다음으로 작성될 글의 번호/
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Bbs bbs = new Bbs();
+				bbs.setBbsID(rs.getInt(1));
+				bbs.setBbsTitle(rs.getString(2));
+				bbs.setUserID(rs.getString(3));
+				bbs.setBbsDate(rs.getString(4));
+				bbs.setBbsContent(rs.getString(5));
+				bbs.setBbsAvailable(rs.getInt(6));
+				list.add(bbs);
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	//다음 페이지를 받아오기 위한 로직
+	public boolean nextPage(int pageNumber) {
+		String SQL = "SELECT * FROM BBS WHERE bbsID < ? and bbsAvailable = 1";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, getNext() - (pageNumber -1)*10);
+			//getNext()는 다음으로 작성될 글의 번호/
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				return true;
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

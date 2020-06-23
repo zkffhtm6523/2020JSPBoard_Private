@@ -12,10 +12,10 @@ public class BbsDAO {
 
 	public BbsDAO() {
 		try {
-			String dbURL = "jdbc:oracle:thin:@localhost:1521:xe";
-			String dbID = "myjsp";
-			String dbPassword = "jsppassword";
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			String dbURL = "jdbc:mysql://localhost:3306/bbs?serverTimezone=UTC";
+			String dbID = "root";
+			String dbPassword = "root";
 			conn = DriverManager.getConnection(dbURL, dbID, dbPassword);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -23,12 +23,12 @@ public class BbsDAO {
 	}
 	//게시판에 글 가져올 때 현재 시간을 가져오는 것
 	public String getDate() {
-		String SQL = "select sysdate from dual";
+		String SQL = "SELECT NOW()";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				return rs.getString("regdate");
+				return rs.getString(1);
 			}
 		}catch (Exception e) {
 			e.printStackTrace();

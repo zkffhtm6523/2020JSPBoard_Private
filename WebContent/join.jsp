@@ -53,7 +53,7 @@
 						<input type="password" class="form-control" placeholder="비밀번호" name="userPassword" maxlength="20">
 					</div>
 					<div class="form-group">
-						<input type="password" class="form-control" placeholder="이름" name="userName" maxlength="20">
+						<input type="text" class="form-control" placeholder="이름" name="userName" maxlength="20">
 					</div>
 					<!-- 성별 버튼 구현식  -->
 					<!-- data-toggle에 button을 하면 radio 버튼이 생기고, buttons를 하면 라디오 버튼 사라짐.  -->
